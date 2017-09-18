@@ -84,7 +84,7 @@ class DomainServiceProviderMockery implements DomainServiceProvider {
             mockRepositoryService = (RepositoryService) mock;
             context.checking(new Expectations() {
                 {
-                    allowing(mockRepositoryService).persist(with(anything()));
+                    allowing(mockRepositoryService).persist(with(Expectations.<T>anything()));
                 }
             });
         }
