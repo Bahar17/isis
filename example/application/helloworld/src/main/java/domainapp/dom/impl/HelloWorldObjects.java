@@ -28,8 +28,7 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.RestrictTo;
 import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.query.QueryDefault;
-import org.apache.isis.applib.services.registry.ServiceRegistry;
+import org.apache.isis.applib.services.jdosupport.IsisJdoSupport;
 import org.apache.isis.applib.services.repository.RepositoryService;
 
 @DomainService(
@@ -50,17 +49,15 @@ public class HelloWorldObjects {
     @Action(semantics = SemanticsOf.SAFE)
     @MemberOrder(sequence = "2")
     public List<HelloWorldObject> findByName(final String name) {
-        return repositoryService.allMatches(
-                new QueryDefault<>(
-                        HelloWorldObject.class,
-                        "findByName",
-                        "name", name));
+        return isisJdoSupport.executeQuery(HelloWorldObject.class,
+                QHelloWorldObject.candidate().name.startsWith(name));
     }
 
     @Action(semantics = SemanticsOf.SAFE, restrictTo = RestrictTo.PROTOTYPING)
     @MemberOrder(sequence = "3")
     public List<HelloWorldObject> listAll() {
-        return repositoryService.allInstances(HelloWorldObject.class);
+        return isisJdoSupport.newTypesafeQuery(HelloWorldObject.class)
+                .executeList();
     }
 
 
@@ -69,7 +66,6 @@ public class HelloWorldObjects {
     RepositoryService repositoryService;
 
     @javax.inject.Inject
-    ServiceRegistry serviceRegistry;
-    //endregion
+    IsisJdoSupport isisJdoSupport;
 
 }
