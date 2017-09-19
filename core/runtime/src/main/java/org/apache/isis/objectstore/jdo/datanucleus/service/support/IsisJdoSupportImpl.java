@@ -62,7 +62,7 @@ import org.apache.isis.core.runtime.system.session.IsisSessionFactory;
         nature = NatureOfService.DOMAIN,
         menuOrder = "" + Integer.MAX_VALUE
 )
-public class IsisJdoSupportImpl implements IsisJdoSupport {
+public class IsisJdoSupportImpl implements org.apache.isis.applib.services.jdosupport.IsisJdoSupport {
     
     @Programmatic
     @Override
