@@ -151,6 +151,8 @@
 
         <guice.version>4.1.0</guice.version>
         <picocontainer.version>2.15</picocontainer.version>
+        
+        <javaee.version>7.0</javaee.version>
 
         <dom4j.version>1.6.1</dom4j.version>
         <jdom.version>2.0.2</jdom.version>
@@ -1389,6 +1391,14 @@ ${license.additional-notes}
                 <groupId>org.picocontainer</groupId>
                 <artifactId>picocontainer</artifactId>
                 <version>${picocontainer.version}</version>
+            </dependency>
+            
+            <!-- JEE API -->
+            <dependency>
+                <groupId>javax</groupId>
+    			<artifactId>javaee-api</artifactId>
+                <version>${javaee.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <!--  Reflection/metadata -->
