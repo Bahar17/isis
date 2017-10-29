@@ -55,7 +55,7 @@ public class IsisDomainAppLifecycleBean {
 	@PreDestroy
 	public void destroy() {
 		IsisContext.destroy();
-		log.info("detroyed.");
+		log.info("destroyed.");
 	}
 	
 }
