@@ -25,8 +25,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 
-import com.google.common.base.Strings;
-
 import org.datanucleus.ClassLoaderResolver;
 import org.datanucleus.enhancer.EnhancementNucleusContextImpl;
 import org.datanucleus.metadata.AbstractClassMetaData;
@@ -34,6 +32,8 @@ import org.datanucleus.metadata.MetaDataListener;
 import org.datanucleus.store.ConnectionEncryptionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 
 /**
@@ -68,6 +68,11 @@ public class CreateSchemaObjectFromClassMetadata implements MetaDataListener, Da
         final String url = properties.get("javax.jdo.option.ConnectionURL");
         final String userName = properties.get("javax.jdo.option.ConnectionUserName");
         final String password = getConnectionPassword();
+        
+        if(Strings.isNullOrEmpty(driverName) || Strings.isNullOrEmpty(url)) {
+        	LOG.warn("Unable to create schema due to missing configuration javax.jdo.option.Connection*");
+        	return;
+        }
 
         try {
 
