@@ -42,6 +42,7 @@ import org.apache.isis.core.commons.lang.ArrayExtensions;
 import org.apache.isis.core.commons.lang.MethodExtensions;
 import org.apache.isis.core.metamodel.services.ServicesInjector;
 import org.apache.isis.core.metamodel.specloader.classsubstitutor.JavassistEnhanced;
+import org.apache.isis.core.runtime.system.context.IsisContext;
 
 import javassist.util.proxy.MethodFilter;
 import javassist.util.proxy.MethodHandler;
@@ -110,8 +111,7 @@ public final class ServiceInstantiator {
     private Class<?> loadClass(final String className) {
         try {
             LOG.debug("loading class for service: " + className);
-            //return Thread.currentThread().getContextClassLoader().loadClass(className);
-            return Class.forName(className);
+            return IsisContext.getClassLoader().loadClass(className);
         } catch (final ClassNotFoundException ex) {
             throw new InitialisationException(String.format("Cannot find class '%s' for service", className));
         }

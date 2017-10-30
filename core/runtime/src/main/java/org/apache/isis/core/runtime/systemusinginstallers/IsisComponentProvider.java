@@ -30,15 +30,6 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.jdo.annotations.PersistenceCapable;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
-import org.reflections.Reflections;
-import org.reflections.vfs.Vfs;
-
 import org.apache.isis.applib.AppManifest;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.DomainService;
@@ -64,9 +55,20 @@ import org.apache.isis.core.runtime.services.ServicesInstallerFromConfiguration;
 import org.apache.isis.core.runtime.services.ServicesInstallerFromConfigurationAndAnnotation;
 import org.apache.isis.core.runtime.system.IsisSystemException;
 import org.apache.isis.core.runtime.system.SystemConstants;
+import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.objectstore.jdo.service.RegisterEntities;
 import org.apache.isis.progmodels.dflt.JavaReflectorHelper;
 import org.apache.isis.progmodels.dflt.ProgrammingModelFacetsJava5;
+import org.reflections.Configuration;
+import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.vfs.Vfs;
+
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * 
@@ -140,7 +142,11 @@ public abstract class IsisComponentProvider {
 
         Vfs.setDefaultURLTypes(ClassDiscoveryServiceUsingReflections.getUrlTypes());
 
-        final Reflections reflections = new Reflections(packages);
+        final Configuration reflectionsConfig = new ConfigurationBuilder()
+        		.addClassLoader(IsisContext.getClassLoader())
+        		.forPackages(packages.toArray(new String[] {})); 
+        final Reflections reflections = new Reflections(reflectionsConfig);
+
         final Set<Class<?>> domainServiceTypes = reflections.getTypesAnnotatedWith(DomainService.class);
         final Set<Class<?>> persistenceCapableTypes = findPersistenceCapableTypes(reflections);
         final Set<Class<? extends FixtureScript>> fixtureScriptTypes = reflections.getSubTypesOf(FixtureScript.class);
