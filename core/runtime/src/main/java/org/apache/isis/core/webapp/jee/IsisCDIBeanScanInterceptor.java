@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  * @author ahuber@apache.org
  *
  */
-final class IsisCDIBeanScanInterceptor implements Extension {
+public final class IsisCDIBeanScanInterceptor implements Extension {
 	
 	private static final Logger log = LoggerFactory.getLogger(IsisCDIBeanScanInterceptor.class);
 
